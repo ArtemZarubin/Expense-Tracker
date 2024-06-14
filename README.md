@@ -1,3 +1,12 @@
+![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
+![DotNet](https://img.shields.io/badge/.NET-5C2D91?style=for-the-badge&logo=.net&logoColor=white)
+![CSHARP](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=c-sharp&logoColor=white)
+![Udemy](https://img.shields.io/badge/Udemy-EC5252?style=for-the-badge&logo=Udemy&logoColor=white)
+![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/w/ArtemZarubin/Expense-Tracker)
+![GitHub last commit (by committer)](https://img.shields.io/github/last-commit/ArtemZarubin/Expense-Tracker)
+![GitHub](https://img.shields.io/github/license/ArtemZarubin/Expense-Tracker)
+
+
 # Expense Tracker 📊💰
 
 Expense Tracker is a user-friendly application designed to help you manage and track your personal expenses efficiently.
