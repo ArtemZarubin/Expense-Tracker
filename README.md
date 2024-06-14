@@ -22,7 +22,7 @@ Expense Tracker is a user-friendly application designed to help you manage and t
 ## Getting Started
 
 1. **Clone the repository**:
-git clone https://github.com/ArtemZarubin/ExpenseTracker.git
+git clone https://github.com/ArtemZarubin/Expense-Tracker.git
 
 2. **Set up the Database**:
    - Ensure you have SQL Server Management Studio (SSMS) installed.
