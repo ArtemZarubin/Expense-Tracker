@@ -156,7 +156,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include=".gitignore" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\pie-chart.ico" />
   </ItemGroup>
