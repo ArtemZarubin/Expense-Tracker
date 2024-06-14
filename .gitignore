@@ -1,0 +1,57 @@
+﻿# Папки и файлы, создаваемые Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Файлы, создаваемые компилятором
+bin/
+obj/
+
+# Папка для временных данных
+tmp/
+temp/
+
+# Файлы, создаваемые конфигурацией и публикацией
+*.log
+*.DS_Store
+*.pdb
+*.cache
+*.ilk
+*.tmp
+*.log
+*.vspscc
+*.vssscc
+
+# Папки, создаваемые NuGet
+packages/
+*.nupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Файлы сборки MSBuild
+*.BuildLog.xml
+
+# Локальные конфигурации и настройки
+*.local.json
+
+# Папки и файлы, создаваемые Rider
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Папки и файлы, создаваемые JetBrains Rider
+.idea/
+*.idea/
+
+# Исключить базы данных SQLite
+*.db
+*.sqlite
+*.sqlite3
+
+# Исключить любые личные или секретные файлы
+secrets.json
+
+# Добавьте любые дополнительные файлы или папки, которые вы хотите исключить

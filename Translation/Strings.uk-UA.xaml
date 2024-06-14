@@ -1,0 +1,8 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <system:String x:Key="AddExpense">Додати витрату</system:String>
+    <system:String x:Key="ShowPieChart">Показати діаграму</system:String>
+    <system:String x:Key="ShowHistogram">Показати гістограму</system:String>
+    <system:String x:Key="Filter">Фільтрувати</system:String>
+</ResourceDictionary>
