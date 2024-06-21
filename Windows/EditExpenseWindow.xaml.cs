@@ -3,7 +3,6 @@ using ExpenseTracker.Models;
 using System;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace ExpenseTracker.Windows
 {
@@ -26,11 +25,17 @@ namespace ExpenseTracker.Windows
                 var categories = context.Categories
                     .Where(c => c.Name != "Other")
                     .OrderBy(c => c.Name)
-                    .Select(c => c.Name)
                     .ToList();
 
                 // Додаємо категорію "Other" в кінець списку
-                categories.Add("Other");
+                var otherCategory = context.Categories.FirstOrDefault(c => c.Name == "Other");
+                if (otherCategory == null)
+                {
+                    otherCategory = new Category { Name = "Other" };
+                    context.Categories.Add(otherCategory);
+                    context.SaveChanges();
+                }
+                categories.Add(otherCategory);
 
                 // Встановлюємо список категорій як джерело даних для ComboBox
                 categoryComboBox.ItemsSource = categories;
@@ -46,34 +51,49 @@ namespace ExpenseTracker.Windows
         private void saveButton_Click(object sender, RoutedEventArgs e)
         {
             // Отримати дані з форми
-            string category = categoryComboBox.SelectedItem as string; // Отримуємо з ComboBox
-            decimal amount;
-            if (!decimal.TryParse(amountTextBox.Text, out amount))
+            var selectedCategory = categoryComboBox.SelectedItem as Category;
+            if (selectedCategory == null)
+            {
+                MessageBox.Show("Please select a valid category!");
+                return;
+            }
+
+            if (!decimal.TryParse(amountTextBox.Text, out decimal amount))
             {
                 MessageBox.Show("Incorrect amount format!");
                 return;
             }
+
             DateTime date = datePicker.SelectedDate ?? DateTime.Now;
             string description = descriptionTextBox.Text;
 
             // Оновити дані витрати
-            _expense.Category = category;
+            _expense.CategoryId = selectedCategory.Id; // Отримуємо Id обраної категорії
+            _expense.Category = selectedCategory; // Присваиваем категорию объекту
             _expense.Amount = amount;
             _expense.Date = date;
             _expense.Description = description;
 
             // Зберегти зміни в базі даних
-            using (var context = new ExpenseTrackerContext())
+            try
             {
-                context.Entry(_expense).State = System.Data.Entity.EntityState.Modified;
-                context.SaveChanges();
+                using (var context = new ExpenseTrackerContext())
+                {
+                    context.Entry(_expense).State = System.Data.Entity.EntityState.Modified;
+                    context.SaveChanges();
+                }
+
+                // Повідомити про успішне збереження
+                MessageBox.Show("Changes saved!");
+                DialogResult = true; // Повернути true, щоб MainWindow знав, що дані були змінені
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while saving changes: {ex.Message}");
             }
 
-            // Повідомити про успішне збереження
-            MessageBox.Show("Changes saved!");
-
             // Закрити вікно редагування
-            DialogResult = true; // Повернути true, щоб MainWindow знав, що дані були змінені
+            this.Close();
         }
     }
 }

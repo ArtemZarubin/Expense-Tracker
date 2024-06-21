@@ -24,12 +24,9 @@ namespace ExpenseTracker.Windows
             {
                 var data = context.Expenses
                     .Where(e => e.Date >= startDate && e.Date <= endDate)
-                    .GroupBy(e => e.Category)
-                    .Select(g => new ExpenseCategoryData
-                    {
-                        Category = g.Key,
-                        Amount = (double)g.Sum(e => e.Amount) // Явное преобразование
-                    }).ToList();
+                    .GroupBy(e => e.Category.Name)
+                    .Select(g => new { Category = g.Key, TotalAmount = g.Sum(e => e.Amount) })
+                    .ToList();
 
                 SeriesCollection series = new SeriesCollection();
 
@@ -38,7 +35,7 @@ namespace ExpenseTracker.Windows
                     series.Add(new PieSeries
                     {
                         Title = item.Category,
-                        Values = new ChartValues<double> { item.Amount },
+                        Values = new ChartValues<double> { (double)item.TotalAmount }, // Використовуємо item.TotalAmount
                         DataLabels = true
                     });
                 }

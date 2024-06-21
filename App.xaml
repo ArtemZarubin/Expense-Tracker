@@ -4,10 +4,6 @@
              xmlns:local="clr-namespace:ExpenseTracker"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Translation\Strings.en-US.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        
     </Application.Resources>
 </Application>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ExpenseTracker.Models
 {
@@ -9,7 +10,10 @@ namespace ExpenseTracker.Models
         public int Id { get; set; }
 
         [Required]
-        public string Category { get; set; }
+        [ForeignKey("Category")] // Вказуємо, що CategoryId є зовнішнім ключем для Category
+        public int CategoryId { get; set; }
+
+        public virtual Category Category { get; set; } // Навігаційна властивість для доступу до категорії
 
         [Required]
         public decimal Amount { get; set; }

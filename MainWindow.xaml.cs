@@ -16,42 +16,29 @@ namespace ExpenseTracker
     public partial class MainWindow : Window
     {
         public MainWindow()
-        {             
+        {
             InitializeComponent();
 
             PresentationTraceSources.DataBindingSource.Switch.Level = System.Diagnostics.SourceLevels.Error;
 
             try
             {
-                using (var context = new ExpenseTrackerContext())
-                {
-                    // Отримати всі витрати з бази даних
-                    var expenses = context.Expenses.ToList();
-
-                    // Вивести кількість витрат в консоль (для перевірки)
-                    Console.WriteLine($"Знайдено витрат: {expenses.Count}");
-
-                    // Встановити джерело даних для DataGrid
-                    expensesDataGrid.ItemsSource = expenses;
-                }
+                UpdateExpensesDataGrid();
             }
             catch (Exception ex)
             {
                 // Вивести повідомлення про помилку, якщо щось піде не так
-                MessageBox.Show($"Помилка: {ex.Message}");
+                MessageBox.Show($"Error: {ex.Message}");
             }
-            
-            UpdateExpensesDataGrid();
         }
 
         public void UpdateExpensesDataGrid()
         {
             using (var context = new ExpenseTrackerContext())
             {
-                var expenses = context.Expenses.ToList();
+                var expenses = context.Expenses.Include("Category").ToList();
                 expensesDataGrid.ItemsSource = expenses;
                 expensesDataGrid.Items.SortDescriptions.Add(new SortDescription("Date", ListSortDirection.Descending));
-
             }
         }
 
@@ -85,7 +72,7 @@ namespace ExpenseTracker
             }
             else
             {
-                MessageBox.Show("Виберіть витрату для редагування!");
+                MessageBox.Show("Select an expense to edit!");
             }
         }
 
@@ -98,7 +85,7 @@ namespace ExpenseTracker
             if (selectedItem is Expense selectedExpense)
             {
                 // Запитати підтвердження видалення
-                MessageBoxResult result = MessageBox.Show($"Ви впевнені, що хочете видалити витрату:\nКатегорія: {selectedExpense.Category}\nСума: {selectedExpense.Amount}\nДата: {selectedExpense.Date:dd.MM.yyyy}?", "Підтвердження видалення", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                MessageBoxResult result = MessageBox.Show($"Are you sure you want to delete an expense:\nCategory: {selectedExpense.Category.Name}\nAmount: {selectedExpense.Amount}\nDate: {selectedExpense.Date:dd.MM.yyyy}?", "Delete confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
                 if (result == MessageBoxResult.Yes)
                 {
@@ -116,7 +103,7 @@ namespace ExpenseTracker
             }
             else
             {
-                MessageBox.Show("Виберіть витрату для видалення!");
+                MessageBox.Show("Select an expense to delete!");
             }
         }
 
@@ -128,10 +115,12 @@ namespace ExpenseTracker
             using (var context = new ExpenseTrackerContext())
             {
                 // Фільтруємо дані за датою
-                var expenses = context.Expenses.Where(expense =>
-                (startDate.HasValue && endDate.HasValue && expense.Date >= startDate.Value && expense.Date <= endDate.Value) ||
-                (startDate.HasValue && !endDate.HasValue && expense.Date == startDate.Value) ||
-                (!startDate.HasValue && endDate.HasValue && expense.Date == endDate.Value)).ToList();
+                var expenses = context.Expenses.Include("Category")
+                    .Where(expense =>
+                        (startDate.HasValue && endDate.HasValue && expense.Date >= startDate.Value && expense.Date <= endDate.Value) ||
+                        (startDate.HasValue && !endDate.HasValue && expense.Date == startDate.Value) ||
+                        (!startDate.HasValue && endDate.HasValue && expense.Date == endDate.Value))
+                    .ToList();
 
                 expensesDataGrid.ItemsSource = expenses;
             }
@@ -152,25 +141,6 @@ namespace ExpenseTracker
             // Створення та відображення вікна гістограми
             HistogramWindow histogramWindow = new HistogramWindow(startDate, endDate);
             histogramWindow.Show();
-        }
-
-        private void changeLanguageButton_Click(object sender, RoutedEventArgs e)
-        {
-            ResourceDictionary dict = new ResourceDictionary();
-
-            if (changeLanguageButton.Content.ToString() == "Змінити мову")
-            {
-                dict.Source = new Uri("Translation/Strings.en-US.xaml", UriKind.Relative);
-                changeLanguageButton.Content = "Change language";
-            }
-            else
-            {
-                dict.Source = new Uri("Translation/Strings.uk-UA.xaml", UriKind.Relative);
-                changeLanguageButton.Content = "Змінити мову";
-            }
-
-            Application.Current.Resources.MergedDictionaries.Clear();
-            Application.Current.Resources.MergedDictionaries.Add(dict);
         }
     }
 }

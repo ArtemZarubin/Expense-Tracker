@@ -32,27 +32,27 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="btnBorder" CornerRadius="5"
-                            Background="{TemplateBinding Background}"
-                            Width="{TemplateBinding Width}"
-                            MaxHeight="{TemplateBinding MaxHeight}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            SnapsToDevicePixels="True"
-                            Padding="{TemplateBinding Padding}">
+                        Background="{TemplateBinding Background}"
+                        Width="{TemplateBinding Width}"
+                        MaxHeight="{TemplateBinding MaxHeight}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        SnapsToDevicePixels="True"
+                        Padding="{TemplateBinding Padding}">
                             <ContentPresenter x:Name="ContentPresenter" Focusable="False"
-                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                          Margin="{TemplateBinding Padding}"
-                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                          RecognizesAccessKey="True" />
+                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      Margin="{TemplateBinding Padding}"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                      RecognizesAccessKey="True" />
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="btnBorder" Property="Background"
-                                    Value="{DynamicResource ButtonMouseOverColor}" />
+                                Value="{DynamicResource ButtonMouseOverColor}" />
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="btnBorder" Property="Background"
-                                    Value="{DynamicResource ButtonPressedColor}" />
+                                Value="{DynamicResource ButtonPressedColor}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -72,12 +72,20 @@
             <DatePicker x:Name="startDatePicker" SelectedDate="2023-01-01" Margin="7"/>
             <TextBlock Text="End Date:" VerticalAlignment="Center" Margin="7"/>
             <DatePicker x:Name="endDatePicker" SelectedDate="2024-12-31" Margin="7"/>
+            <ComboBox x:Name="categoryComboBox" Margin="7" Width="150" ItemsSource="{Binding Categories}" />
             <Button Content="Load data"
                     Style="{DynamicResource PrimaryButtonStyle}"
                     Click="filterButton_Click"
                     Margin="7"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"/>
+            <Button Content="Show All Categories"
+                    Style="{DynamicResource PrimaryButtonStyle}"
+                    Click="ShowAllCategories_Click"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Margin="7"/>
+
         </StackPanel>
 
         <lvc:CartesianChart x:Name="histogramChart" Series="{Binding SeriesCollection}" LegendLocation="Right" Grid.Row="1">

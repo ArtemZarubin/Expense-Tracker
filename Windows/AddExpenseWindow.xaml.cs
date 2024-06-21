@@ -3,6 +3,7 @@ using ExpenseTracker.Models;
 using System;
 using System.Linq;
 using System.Windows;
+using Microsoft.VisualBasic;
 
 namespace ExpenseTracker.Windows
 {
@@ -32,7 +33,7 @@ namespace ExpenseTracker.Windows
         private void saveButton_Click(object sender, RoutedEventArgs e)
         {
             // Отримати дані з текстових полів
-            string category = categoryComboBox.SelectedItem as string; // Отримуємо обрану категорію з ComboBox
+            string categoryName = categoryComboBox.SelectedItem as string; // Отримуємо обрану категорію з ComboBox
 
             decimal amount;
             if (!decimal.TryParse(amountTextBox.Text, out amount))
@@ -43,47 +44,65 @@ namespace ExpenseTracker.Windows
             DateTime date = datePicker.SelectedDate ?? DateTime.Now;
             string description = descriptionTextBox.Text;
 
-            // Обробка нової категорії
-            if (category == "Add new")
+            using (var context = new ExpenseTrackerContext())
             {
-                // Перевірка на пусту назву категорії
-                if (string.IsNullOrEmpty(category))
-                {
-                    MessageBox.Show("Enter the name of the new category!");
-                    return;
-                }
+                Category selectedCategory = null;
 
-                // Перевірка, чи така категорія вже існує
-                using (var context = new ExpenseTrackerContext())
+                // Обробка нової категорії
+                if (categoryName == "Other")
                 {
-                    if (context.Categories.Any(c => c.Name == category))
+                    // Отримуємо нове ім'я категорії
+                    string newCategoryName = Interaction.InputBox("Enter the name of the new category:", "New Category");
+
+                    // Перевірка на пусту назву категорії
+                    if (string.IsNullOrEmpty(newCategoryName))
                     {
-                        MessageBox.Show("This category is already in existence!");
+                        MessageBox.Show("Enter the name of the new category!");
                         return;
                     }
 
-                    // Додати нову категорію до бази даних
-                    context.Categories.Add(new Category { Name = category });
-                    context.SaveChanges();
+                    // Перевірка, чи така категорія вже існує
+                    selectedCategory = context.Categories.FirstOrDefault(c => c.Name == newCategoryName);
 
-                    // Додаємо нову категорію до ComboBox
-                    categoryComboBox.Items.Add(category);
-                    categoryComboBox.SelectedItem = category; // Вибираємо нову категорію в ComboBox
+                    if (selectedCategory == null)
+                    {
+                        // Добавление новой категории в базу данных
+                        selectedCategory = new Category { Name = newCategoryName };
+                        context.Categories.Add(selectedCategory);
+                        context.SaveChanges();
+
+                        // Обновление списка категорий в ItemsSource
+                        var categories = context.Categories.ToList(); // Получаем обновленный список категорий
+                        categoryComboBox.ItemsSource = categories; // Обновляем ItemsSource
+
+                        // Выбираем новую категорию в ComboBox
+                        categoryComboBox.SelectedItem = selectedCategory;
+                    }
+
                 }
-            }
+                else
+                {
+                    // Используем существующую категорию
+                    selectedCategory = context.Categories.FirstOrDefault(c => c.Name == categoryName);
+                }
 
-            // Створити новий об'єкт Expense
-            Expense newExpense = new Expense
-            {
-                Category = category,
-                Amount = amount,
-                Date = date,
-                Description = description
-            };
+                // Перевірка, чи обрано категорію
+                if (selectedCategory == null)
+                {
+                    MessageBox.Show("Select a category!");
+                    return;
+                }
 
-            // Зберегти витрату в базі даних
-            using (var context = new ExpenseTrackerContext())
-            {
+                // Створити новий об'єкт Expense
+                Expense newExpense = new Expense
+                {
+                    CategoryId = selectedCategory.Id, // Отримуємо Id обраної категорії
+                    Amount = amount,
+                    Date = date,
+                    Description = description
+                };
+
+                // Зберегти витрату в базі даних
                 context.Expenses.Add(newExpense);
                 context.SaveChanges();
             }

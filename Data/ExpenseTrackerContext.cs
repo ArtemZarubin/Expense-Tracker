@@ -17,5 +17,5 @@ namespace ExpenseTracker.Data
         {
             base.OnModelCreating(modelBuilder);
         }
-    }    
+    }
 }

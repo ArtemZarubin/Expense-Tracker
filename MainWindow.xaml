@@ -76,7 +76,7 @@
         </Grid.ColumnDefinitions>
 
         <Button x:Name="addExpenseButton"                
-                Content="{DynamicResource AddExpense}"
+                Content= "Add Expense"
                 Style="{DynamicResource PrimaryButtonStyle}"
                 Click="addExpenseButton_Click"
                 Grid.Row="1"
@@ -87,17 +87,17 @@
         />
 
         <Button x:Name="showPieChartButton"
-                Content="{DynamicResource ShowPieChart}"
+                Content="Show Pie Chart"
                 Style="{DynamicResource PrimaryButtonStyle}"
                 Margin="7"
                 Click="showPieChartButton_Click"
-                Grid.Row="1"
-                Grid.Column="2"
+                Grid.Row="0"
+                Grid.Column="3"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"/>
 
         <Button x:Name="showHistogramButton"
-                Content="{DynamicResource ShowHistogram}"
+                Content="Show Histogram"
                 Style="{DynamicResource PrimaryButtonStyle}"
                 Margin="7"
                 Click="showHistogramButton_Click"
@@ -106,19 +106,9 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center" />
 
-        <Button x:Name="changeLanguageButton"
-                Style="{DynamicResource PrimaryButtonStyle}"
-                Content="Change language"
-                Margin="7"
-                Click="changeLanguageButton_Click"
-                Grid.Row="0"
-                Grid.Column="3"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                />
 
         <Button x:Name="filterButton"
-                Content="{DynamicResource Filter}"
+                Content="Filter"
                 Style="{DynamicResource PrimaryButtonStyle}"
                 Click="filterButton_Click"
                 Grid.Row="1"
@@ -133,7 +123,14 @@
         <DatePicker x:Name="endDatePicker" Margin="79,10,10,10" Grid.Row="0" Grid.Column="1" />
 
 
-        <DataGrid x:Name="expensesDataGrid" CanUserSortColumns="True" Grid.Row="2" Grid.ColumnSpan="4">
+        <DataGrid x:Name="expensesDataGrid" 
+          CanUserSortColumns="True" 
+          AutoGenerateColumns="False" 
+          CanUserResizeColumns="False" 
+          HeadersVisibility="Column" 
+          CanUserAddRows="False" 
+          Grid.Row="2" 
+          Grid.ColumnSpan="4">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Actions">
                     <DataGridTemplateColumn.CellTemplate>
@@ -144,20 +141,26 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Button Content="Edit"
-                                        Style="{DynamicResource PrimaryButtonStyle}"
-                                        Margin="2"
-                                        Click="EditButton_Click"
-                                        Grid.Column="0"/>
+                                Style="{DynamicResource PrimaryButtonStyle}"
+                                Margin="2"
+                                Click="EditButton_Click"
+                                Grid.Column="0"/>
                                 <Button Content="Delete"
-                                        Style="{DynamicResource PrimaryButtonStyle}"
-                                        Margin="2"
-                                        Click="DeleteButton_Click"
-                                        Grid.Column="1"/>
+                                Style="{DynamicResource PrimaryButtonStyle}"
+                                Margin="2"
+                                Click="DeleteButton_Click"
+                                Grid.Column="1"/>
                             </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+
+                <DataGridTextColumn Header="Category" Binding="{Binding Category.Name}" Width="Auto"/>
+                <DataGridTextColumn Header="Amount" Binding="{Binding Amount}" Width="Auto"/>
+                <DataGridTextColumn Header="Date" Binding="{Binding Date, StringFormat={}{0:dd.MM.yyyy}}" Width="Auto"/>
+                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
+
     </Grid>
 </Window>

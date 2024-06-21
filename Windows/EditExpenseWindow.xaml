@@ -11,9 +11,7 @@
     <Window.Resources>
         <SolidColorBrush x:Key="PrimaryBlueColor" Color="#304FFE"/>
         <SolidColorBrush x:Key="PrimaryTextColor" Color="#FFFFFF"/>
-
         <SolidColorBrush x:Key="ButtonMouseOverColor" Color="#0026CA"/>
-
         <SolidColorBrush x:Key="ButtonPressedColor" Color="#7A7CFF"/>
 
         <!-- Start: PrimaryButtonStyle-->
@@ -76,16 +74,16 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" Content="Категорія:" Margin="5"/>
-        <ComboBox x:Name="categoryComboBox" Grid.Row="0" Grid.Column="1" Margin="5" />
+        <Label Grid.Row="0" Grid.Column="0" Content="Category:" Margin="5"/>
+        <ComboBox x:Name="categoryComboBox" Grid.Row="0" Grid.Column="1" Margin="5" DisplayMemberPath="Name" SelectedValuePath="Id" />
 
-        <Label Grid.Row="1" Grid.Column="0" Content="Сума:" Margin="5"/>
+        <Label Grid.Row="1" Grid.Column="0" Content="Amount:" Margin="5"/>
         <TextBox x:Name="amountTextBox" Grid.Row="1" Grid.Column="1" Margin="5"/>
 
-        <Label Grid.Row="2" Grid.Column="0" Content="Дата:" Margin="5"/>
+        <Label Grid.Row="2" Grid.Column="0" Content="Date:" Margin="5"/>
         <DatePicker x:Name="datePicker" Grid.Row="2" Grid.Column="1" Margin="5"/>
 
-        <Label Grid.Row="3" Grid.Column="0" Content="Опис:" Margin="5"/>
+        <Label Grid.Row="3" Grid.Column="0" Content="Description:" Margin="5"/>
         <TextBox x:Name="descriptionTextBox" Grid.Row="3" Grid.Column="1" Margin="5"  Grid.RowSpan="2" AcceptsReturn="True" TextWrapping="Wrap"/>
 
         <Button x:Name="saveButton"

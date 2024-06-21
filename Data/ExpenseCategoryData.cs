@@ -12,4 +12,3 @@ namespace ExpenseTracker.Data
         public double Amount { get; set; }
     }
 }
-
