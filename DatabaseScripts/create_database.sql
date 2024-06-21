@@ -1,4 +1,4 @@
--- Database creation
+-- Create a PersonalExpenses database
 CREATE DATABASE PersonalExpenses;
 GO
 
@@ -6,21 +6,21 @@ GO
 USE PersonalExpenses;
 GO
 
--- Create Expenses table
-CREATE TABLE Expenses (
+-- Creating the Categories table
+CREATE TABLE Categories (
     Id INT PRIMARY KEY IDENTITY(1,1),
-    Category NVARCHAR(255) NOT NULL,
-    Amount DECIMAL(18,2) NOT NULL,
-    Date DATE NOT NULL,
-    Description NVARCHAR(MAX)
+    Name NVARCHAR(255) NOT NULL
 );
 GO
 
--- Creating the Categories table
-CREATE TABLE Categories
-(
+-- Create Expenses table
+CREATE TABLE Expenses (
     Id INT PRIMARY KEY IDENTITY(1,1),
-    Name NVARCHAR(255) NOT NULL
+    CategoryId INT,
+    Amount DECIMAL(18,2) NOT NULL,
+    Date DATE NOT NULL,
+    Description NVARCHAR(MAX),
+    CONSTRAINT FK_Expenses_Categories FOREIGN KEY (CategoryId) REFERENCES Categories(Id)
 );
 GO
 
@@ -46,3 +46,27 @@ VALUES
   ('Transportation'),
   ('Travel'),
   ('Utilities');
+GO
+
+-- Adding a CategoryId column to the Expenses table if it doesn't already exist
+IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'Expenses' AND COLUMN_NAME = 'CategoryId')
+BEGIN
+    ALTER TABLE Expenses
+    ADD CategoryId INT;
+END
+GO
+
+-- Update CategoryId based on existing data in Category
+UPDATE Expenses
+SET CategoryId = c.Id
+FROM Expenses e
+JOIN Categories c ON e.CategoryId = c.Id;
+GO
+
+-- Removing the Category column from the Expenses table if it is not already removed
+IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'Expenses' AND COLUMN_NAME = 'Category')
+BEGIN
+    ALTER TABLE Expenses
+    DROP COLUMN Category;
+END
+GO
