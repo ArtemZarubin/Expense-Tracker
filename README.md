@@ -26,7 +26,7 @@ git clone https://github.com/ArtemZarubin/Expense-Tracker.git
 
 2. **Set up the Database**:
    - Ensure you have SQL Server Management Studio (SSMS) installed.
-   - Execute the SQL scripts provided in `DatabaseScripts` folder to set up the database schema. 🛠️
+   - Execute the SQL scripts provided in [`DatabaseScripts`](DatabaseScripts/create_database.sql) folder to set up the database schema. 🛠️
 
 3. **Build and Run**:
    - Open the solution file `ExpenseTracker.sln` in Visual Studio.
